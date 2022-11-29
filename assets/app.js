@@ -17,12 +17,12 @@ let html = `<img src="${logoPath}" alt="ACME logo">`; */
 
 console.log('Hello Webpack Encore !')
 
-require('bootstrap');
+require('bootstrap');// j appel boostrap
 
 // or you can include specific pieces
 // require('bootstrap/js/dist/tooltip');
 // require('bootstrap/js/dist/popover');
 
 $(document).ready(function() {
-    $('[data-toggle="popover"]').popover();
+    $('[data-toggle="popover"]').popover(); //animation js 
 });
