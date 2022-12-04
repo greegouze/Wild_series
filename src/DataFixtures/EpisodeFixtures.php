@@ -43,7 +43,7 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
 
     {
 
-        // Tu retournes ici toutes les classes de fixtures dont ProgramFixtures dépend
+        // Tu retournes ici toutes les classes de fixtures dont EpisodeFixtures dépend
 
         return [
 
