@@ -8,6 +8,7 @@ use App\DataFixtures\SeasonFixtures;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Faker\Factory;
 
 class EpisodeFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -20,6 +21,8 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
     ];
     public function load(ObjectManager $manager): void
     {
+        $faker = Factory::create();
+
         for ($i = 0; $i < count(ProgramFixtures::PROGRAMES); $i++) {
             for ($j = 0; $j < SeasonFixtures::SEASON_NUMBER; $j++) {
                 foreach (self::EPISODES as $episodeName) {
@@ -28,7 +31,7 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
 
                     $episode->setTitle($episodeName);
 
-
+                    $episode->setSynopsis($faker->paragraphs(2, true));
 
                     $episode->setSeason($this->getReference('program_' . $i . '_season_' . $j));
 
