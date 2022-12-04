@@ -26,13 +26,18 @@ class CategoryFixtures extends Fixture
     public function load(ObjectManager $manager)
 
     {
-        //je boucle ainsi sur mon tableau 
-        foreach (self::CATEGORIES as $key => $categoryName) {
-            $category = new Category();
-            $category->setName($categoryName); //setname me permet de changer de nom au fur est à mesure de ma boucle
 
-            $manager->persist($category); //persist-> transforme en objet
+        foreach (self::CATEGORIES as $categoryName) {
+
+            $category = new Category();
+
+            $category->setName($categoryName);
+
+            $manager->persist($category);
+
+            $this->addReference('category_' . $categoryName, $category);
         }
-        $manager->flush(); //flush() envoie en base donnée
+
+        $manager->flush();
     }
 }

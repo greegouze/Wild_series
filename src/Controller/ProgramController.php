@@ -2,33 +2,74 @@
 // src/Controller/ProgramController.php
 namespace App\Controller;
 
+use App\Repository\ProgramRepository;
+use App\Repository\SeasonRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 #[Route('/program', name: 'program_')]
 class ProgramController extends AbstractController
-{ 
+{
 
-    #[Route('/', name: 'program_index')]
-    public function index(): Response
+    #[Route('/', name: 'index')]
+    public function index(ProgramRepository $programRepository): Response
     {
+        $programs = $programRepository->findAll();
 
         return $this->render('program/index.html.twig', [
 
-            'website' => 'Wild Series',
+            'programs' => $programs,
 
         ]);
     }
 
-   
-     #[Route('/show/{id}', methods: ['GET'], requirements: ['id'=>'\d+'], name: 'program_show')] // {page}->parametre ensuite je le passe à ma fonction methode get pour recuperer l'id dans l'url et requirements pour incrementer ++
 
-     public function show(int $id): Response
+    #[Route('/show/{id}', name: 'show')]
 
-     {
+    public function show(int $id, ProgramRepository $programRepository): Response
 
-         return $this->render('program/show.html.twig', ['id' => $id]);
+    {
 
-     }
+        $program = $programRepository->findOneBy(['id' => $id]);
+
+
+        // same as $program = $programRepository->find($id);
+
+
+        if (!$program) {
+
+            throw $this->createNotFoundException(
+
+                'No program with id : ' . $id . ' found in program\'s table.'
+
+            );
+        }
+
+        return $this->render('program/show.html.twig', [
+
+            'program' => $program,
+
+        ]);
+    }
+
+    #[Route('/{programId}/seasons/{seasonId}', name: 'season_show')]
+
+    public function showSeason(SeasonRepository $seasonRepository, ProgramRepository $programRepository, int $programId, int $seasonId): Response
+
+    {
+
+        $program = $programRepository->findOneBy(['id' => $programId]);
+        if (!$program) {
+            throw $this->createNotFoundException(
+                'No program with id : ' . $programId . ' found in program\'s table.'
+            );
+        }
+        $season = $seasonRepository->findOneBy(['id' => $seasonId]);
+       //dd($season);
+        return $this->render('program/season_show.html.twig', [
+            'program' => $program,
+            'season' => $season,
+        ]);
+    }
 }
