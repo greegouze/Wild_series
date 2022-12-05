@@ -2,12 +2,16 @@
 // src/Controller/ProgramController.php
 namespace App\Controller;
 
+use App\Entity\Episode;
+use App\Entity\Season;
+use App\Entity\Program;
+use Doctrine\ORM\Mapping\Entity;
+use App\Repository\SeasonRepository;
 use App\Repository\EpisodeRepository;
 use App\Repository\ProgramRepository;
-use App\Repository\SeasonRepository;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 
 #[Route('/program', name: 'program_')]
 class ProgramController extends AbstractController
@@ -26,26 +30,12 @@ class ProgramController extends AbstractController
     }
 
 
-    #[Route('/show/{id}', name: 'show')]
+    #[Route('/show/{id}', requirements: ['id' => '\d+'], name: 'show')]
 
-    public function show(int $id, ProgramRepository $programRepository): Response
+    public function show(Program $program): Response
 
     {
-
-        $program = $programRepository->findOneBy(['id' => $id]);
-
-
-        // same as $program = $programRepository->find($id);
-
-
-        if (!$program) {
-
-            throw $this->createNotFoundException(
-
-                'No program with id : ' . $id . ' found in program\'s table.'
-
-            );
-        }
+        // same as $program = $programRepository->find($id)
 
         return $this->render('program/show.html.twig', [
 
@@ -54,23 +44,24 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/{programId}/seasons/{seasonId}', name: 'season_show')]
-
-    public function showSeason(SeasonRepository $seasonRepository, ProgramRepository $programRepository, int $programId, int $seasonId): Response
-
+    #[Route('/{program}/seasons/{season}', requirements: ['id' => '\d+'], name: 'season_show')] // le paramtre de ma route doit être identique à ma variable 
+    #[Entity('program', options: ['mapping' => ['program' => 'id']])]//{program} donc ['program' => 'id' ] pareil pour la vue twig {program: program.id}
+    #[Entity('season', options: ['mapping' => ['season' => 'id']])]
+    public function showSeason(Season $season, Program $program): Response
     {
 
-        $program = $programRepository->findOneBy(['id' => $programId]);
-        if (!$program) {
-            throw $this->createNotFoundException(
-                'No program with id : ' . $programId . ' found in program\'s table.'
-            );
-        }
-        $season = $seasonRepository->findOneBy(['id' => $seasonId]);
-       //dd($season);
         return $this->render('program/season_show.html.twig', [
             'program' => $program,
+            'season' => $season
+        ]);
+    }
+    #[Route('/program/{program}/season/{season}/episode/{episode}', requirements: ['id' => '\d+'], name: 'episode_show')]//{program} donc ['program' => 'id' ] pareil pour la vue twig {program: program.id}
+    public function showEpisode(Program $program, Season $season, Episode $episode): Response
+    {
+        return $this->render('program/episode_show.html.twig', [
+            'program' => $program,
             'season' => $season,
+            'episode' => $episode
         ]);
     }
 }
