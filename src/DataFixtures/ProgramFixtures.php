@@ -4,7 +4,9 @@
 namespace App\DataFixtures;
 
 
+use Faker\Factory;
 use App\Entity\Program;
+use App\DataFixtures\CategoryFixtures;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -14,37 +16,33 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
 
 {
     const PROGRAMES = [
-        'Star warz' => 'La guerre des étoiles',
-        'Breaking bad' => 'El parrain',
-        'Le seigneur des anneaux' => 'Le Hobbit',
-        'Games of thrônes' => 'les noces poupres',
-        'Death Note' => 'Le dernier jour'
+        'Star warz',
+        'Breaking bad',
+        'Le seigneur des anneaux',
+        'Games of thrônes',
+        'Death Note'
     ];
 
     public function load(ObjectManager $manager)
 
     {
-        $i = 0;
+        $faker = Factory::create();
+        
+        foreach (CategoryFixtures::CATEGORIES as $key => $categorymName) { // boucle sur ma constante
+            foreach (self::PROGRAMES as $programKey => $programName) {
+                $program = new Program(); //instancie un objet program
+                $program->setTitle($programName); // j'ajoute le titre(star wars)
+                $program->setSynopsis($faker->paragraph(2,true)); //j'ajoute le synopsis
+                $category = $this->getReference('category_' . $key);
+                $program->setCategory($category);
+                $this->addReference('category_' . $key . '_program_' . $programKey, $program); //je l'ajoute à la catégorie action
+                $manager->persist($program); //perist = sauvegarde la requête et ci il y a des requêtes supplémentaire et a la fin il envoie tout avec le flush(evite de faire une par une)
 
-        foreach (self::PROGRAMES as $key => $programName) { // boucle sur ma constante
-
-            $program = new Program(); //instancie un objet program
-
-            $program->setTitle($key); // j'ajoute le titre(star wars)
-
-            $program->setSynopsis($programName); //j'ajoute le synopsis
-
-            $program->setCategory($this->getReference('category_Action'));
-            
-            $this->addReference('program_' . $i, $program); //je l'ajoute à la catégorie action
-
-            $manager->persist($program); //perist = sauvegarde la requête et ci il y a des requêtes supplémentaire et a la fin il envoie tout avec le flush(evite de faire une par une)
-
-            $i++;
+            }
         }
-    
 
-        $manager->flush(); 
+
+        $manager->flush();
     }
 
 

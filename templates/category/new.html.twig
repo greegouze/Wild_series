@@ -1,0 +1,8 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+     {{ form_start(form) }}  {# génère la balise HTML form #}
+    {{ form_widget(form) }}  {# ajoute l'ensemble des champs de formulaire #}
+    <button type="submit">Add category</button>
+    {{ form_end(form) }} {# ferme la balise HTML form (et ajoute tous les champs manquants) #}
+{% endblock %}

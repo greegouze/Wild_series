@@ -3,11 +3,12 @@
 namespace App\DataFixtures;
 
 
+use Faker\Factory;
 use App\Entity\Season;
+use App\DataFixtures\CategoryFixtures;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
 
 class SeasonFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -26,21 +27,22 @@ class SeasonFixtures extends Fixture implements DependentFixtureInterface
 
          */
 
-        for ($j = 0; $j < count(ProgramFixtures::PROGRAMES); $j++) { // je boucle sur mon tableau de programme auquel je lui ajoute a chaque tour de boucle une saison allan max 5saison(constante)
-            for ($i = 0; $i < self::SEASON_NUMBER; $i++) {
-                $season = new Season();
-                $season->setNumber($i);
-                $season->setYear($faker->year());
-                $season->setDescription($faker->paragraphs(3, true));
-                $season->setProgram($this->getReference('program_' . $i)); // je lui donne un programme et lui affiche une référence(saion)
-                $this->addReference('program_' . $j . '_season_' . $i, $season); // en gros, program_star wars_season_1. ($season est l'objet a qui je lui donne la réf)
-                $manager->persist($season); // je sauvegarde 
-            }
+        for ($k = 0; $k < count(CategoryFixtures::CATEGORIES); $k++) {
+            for ($j = 0; $j < count(ProgramFixtures::PROGRAMES); $j++) { // je boucle sur mon tableau de programme auquel je lui ajoute a chaque tour de boucle une saison allan max 5saison(constante)
+                for ($i = 0; $i < self::SEASON_NUMBER; $i++) {
+                    $season = new Season();
+                    $season->setNumber($i);
+                    $season->setYear($faker->year());
+                    $season->setDescription($faker->paragraphs(3, true));
+                    $season->setProgram($this->getReference('category_' . $k . '_program_' . $j)); // je lui donne un programme et lui affiche une référence(saion)
+                    $this->addReference('category_' . $k . '_program_' . $j . '_season_' . $i, $season); // en gros, program_star wars_season_1. ($season est l'objet a qui je lui donne la réf)
+                    $manager->persist($season); // je sauvegarde 
+                }
 
-            $manager->flush(); // et ensuite je l'envoie en basse de donnée
+                $manager->flush(); // et ensuite je l'envoie en basse de donnée
+            }
         }
     }
-
 
     public function getDependencies(): array
 
