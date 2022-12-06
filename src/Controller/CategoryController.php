@@ -26,28 +26,26 @@ class CategoryController extends AbstractController
 
         ]);
     }
-     #[Route('/new', name: 'new')]
+    #[Route('/new', name: 'new')]
     public function new(Request $request, CategoryRepository $categoryRepository): Response
     {
         $category = new Category();
-    // Create the associated Form
-    $form = $this->createForm(CategoryType::class, $category);
-    // Get data from HTTP request
-    $form->handleRequest($request);
-    // Was the form submitted ?
-    if ($form->isSubmitted()) {
-        $categoryRepository->save($category, true);
-        // Deal with the submitted data
-        // For example : persiste & flush the entity
-        // And redirect to a route that display the result
-        return $this->redirectToRoute('category_index');
-    }
-    // Render the form
-    return $this->renderForm('category/new.html.twig', [
-
-        'form' => $form,
-
-    ]);
+        // Create the associated Form
+        $form = $this->createForm(CategoryType::class, $category);
+        // Get data from HTTP request
+        $form->handleRequest($request);
+        // Was the form submitted ?
+        if ($form->isSubmitted() && $form->isValid()) {
+            $categoryRepository->save($category, true);
+            // Deal with the submitted data
+            // For example : persiste & flush the entity
+            // And redirect to a route that display the result
+            return $this->redirectToRoute('category_index');
+        }
+        // Render the form
+        return $this->renderForm('category/new.html.twig', [
+            'form' => $form,
+        ]);
 
         // Alternative
         // return $this->render('category/new.html.twig', [
@@ -60,22 +58,18 @@ class CategoryController extends AbstractController
 
     {
         $category = $categoryRepository->findOneBy(['name' => $categoryName]); // je récupère le name du tableau catégory
-
         if (!$category) {
             throw $this->createNotFoundException(
                 'No category with name : ' . $category . ' found in category\'s table.'
             );
         }
-
         $categoryId = $category->getId();
         $programs = $programRepository->findBy(
             ['category' => $categoryId],
             ['id' => 'DESC'],
             3
-
         );
         return $this->render('category/show.html.twig', [
-
             'programs' => $programs,
         ]);
     }

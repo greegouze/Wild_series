@@ -20,12 +20,9 @@ class SeasonFixtures extends Fixture implements DependentFixtureInterface
 
         $faker = Factory::create();
         /**
-
-         * L'objet $faker que tu récupère est l'outil qui va te permettre 
-
-         * de te générer toutes les données que tu souhaites
-
-         */
+        * L'objet $faker que tu récupère est l'outil qui va te permettre 
+        * de te générer toutes les données que tu souhaites
+        */
 
         for ($k = 0; $k < count(CategoryFixtures::CATEGORIES); $k++) {
             for ($j = 0; $j < count(ProgramFixtures::PROGRAMES); $j++) { // je boucle sur mon tableau de programme auquel je lui ajoute a chaque tour de boucle une saison allan max 5saison(constante)
@@ -45,13 +42,11 @@ class SeasonFixtures extends Fixture implements DependentFixtureInterface
     }
 
     public function getDependencies(): array
-
     {
 
         // Tu retournes ici toutes les classes de fixtures dont SeasonFixtures dépend
 
         return [
-
             ProgramFixtures::class,
 
         ];

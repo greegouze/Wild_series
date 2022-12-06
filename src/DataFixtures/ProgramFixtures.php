@@ -13,7 +13,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 
 class ProgramFixtures extends Fixture implements DependentFixtureInterface
-
 {
     const PROGRAMES = [
         'Star warz',
@@ -24,15 +23,14 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
     ];
 
     public function load(ObjectManager $manager)
-
     {
         $faker = Factory::create();
-        
+
         foreach (CategoryFixtures::CATEGORIES as $key => $categorymName) { // boucle sur ma constante
             foreach (self::PROGRAMES as $programKey => $programName) {
                 $program = new Program(); //instancie un objet program
                 $program->setTitle($programName); // j'ajoute le titre(star wars)
-                $program->setSynopsis($faker->paragraph(2,true)); //j'ajoute le synopsis
+                $program->setSynopsis($faker->paragraph(2, true)); //j'ajoute le synopsis
                 $category = $this->getReference('category_' . $key);
                 $program->setCategory($category);
                 $this->addReference('category_' . $key . '_program_' . $programKey, $program); //je l'ajoute à la catégorie action
@@ -47,13 +45,11 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
 
 
     public function getDependencies()
-
     {
 
         // Tu retournes ici toutes les classes de fixtures dont ProgramFixtures dépend
 
         return [
-
             CategoryFixtures::class,
 
         ];
