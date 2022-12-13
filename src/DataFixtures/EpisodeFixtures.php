@@ -25,8 +25,8 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
         $faker = Factory::create();
 
         for ($k = 0; $k < count(CategoryFixtures::CATEGORIES); $k++)
-            for ($i = 0; $i < count(ProgramFixtures::PROGRAMES); $i++) {
-                for ($j = 0; $j < SeasonFixtures::SEASON_NUMBER; $j++) {
+            for ($j = 0; $j < count(ProgramFixtures::PROGRAMES); $j++) {
+                for ($i = 0; $i < SeasonFixtures::SEASON_NUMBER; $i++) {
                     foreach (self::EPISODES as $episodeName) {
 
                         $episode = new Episode();
@@ -35,7 +35,7 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
 
                         $episode->setSynopsis($faker->paragraphs(2, true));
 
-                        $episode->setSeason($this->getReference('category_' . $k . '_program_' . $i . '_season_' . $j));
+                        $episode->setSeason($this->getReference('category_' . $k . '_program_' . $j . '_season_' . $i));
 
                         $manager->persist($episode);
                     }
