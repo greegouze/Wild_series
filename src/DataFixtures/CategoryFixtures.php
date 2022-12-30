@@ -5,15 +5,15 @@ namespace App\DataFixtures;
 
 
 use App\Entity\Category;
-
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
-use Doctrine\Persistence\ObjectManager;
 
 
 class CategoryFixtures extends Fixture
 
 {
+   
     //je creer mes constantes
     const CATEGORIES = [
         'Action',
@@ -30,11 +30,8 @@ class CategoryFixtures extends Fixture
         foreach (self::CATEGORIES as $categoryKey => $categoryName) {
 
             $category = new Category();
-
             $category->setName($categoryName);
-
             $manager->persist($category);
-
             $this->addReference('category_' . $categoryKey, $category);
         }
 

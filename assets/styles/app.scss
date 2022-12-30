@@ -1,5 +1,5 @@
 $primary: rgb(255, 60, 0); //scss me permet de déclarer ma variable avec $ puis me la compile dans build en css
-
+$secondary:rgb(87, 69, 64);
 // scsslanguage css amélioré(for) -> compile css dans public/build 
 @import "~bootstrap/scss/bootstrap";
 
@@ -7,11 +7,12 @@ $primary: rgb(255, 60, 0); //scss me permet de déclarer ma variable avec $ puis
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-body {
-    
-    background-color: rgb(233, 226, 222);
+.card {
+    width: 100%;
+    height: 100%;
+    padding: 0 14px;
+    object-fit: cover;  
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
 }
 
-/* .navbar  {
-    background-color: $primary;
-} */

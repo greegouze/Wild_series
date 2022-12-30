@@ -9,6 +9,7 @@ use App\DataFixtures\SeasonFixtures;
 use App\DataFixtures\CategoryFixtures;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class EpisodeFixtures extends Fixture implements DependentFixtureInterface
@@ -20,6 +21,11 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
         'Episode 4',
         'Episode 5',
     ];
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create();
@@ -32,9 +38,9 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
                         $episode = new Episode();
 
                         $episode->setTitle($episodeName);
-
+                        $episode->setSlug($this->slugger->slug($episodeName));
                         $episode->setSynopsis($faker->paragraphs(2, true));
-
+                        $episode->setDuration($faker->randomNumber(2));
                         $episode->setSeason($this->getReference('category_' . $k . '_program_' . $j . '_season_' . $i));
 
                         $manager->persist($episode);
@@ -46,14 +52,9 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
     }
     public function getDependencies()
 
-    {
-
-        // Tu retournes ici toutes les classes de fixtures dont EpisodeFixtures dépend
-
+    {   // Tu retournes ici toutes les classes de fixtures dont EpisodeFixtures dépend
         return [
-
             SeasonFixtures::class,
-
         ];
     }
 }

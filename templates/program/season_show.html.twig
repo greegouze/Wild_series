@@ -5,18 +5,11 @@
 
 
 {% block body %}
-
 	<div class="media">
-
-		<img class="align-self-start mr-3" src="{{program.poster}}" alt="{{ program.title }} poster">
-
+		<img class="align-self-start mr-3" src="{{ asset('build/images/placeholder.jpeg') }}" alt="{{ program.title }} poster">
 		<div class="media-body">
-
 			<h1 class="mt-0">{{ season.number }}</h1>
-
 			<p>{{ season.description }}</p>
-
-
 			<ul>
 				{% for episode in season.episodes %}
 					<li>{{loop.index}}-- Titre :
@@ -24,9 +17,7 @@
 						{{episode.Synopsis}}</li>
 				{% endfor %}
 			</ul>
-
 		</ul>
-
 	</div>
 </div>
 <a href="{{ path('program_index') }}">Retour à la liste des programmes</a>{% endblock %}

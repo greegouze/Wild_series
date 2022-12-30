@@ -5,38 +5,25 @@
 
 
 {% block body %}
-
 	<h1>Toutes les films et séries disponible :
 	</h1>
-
-	{% for program in programs %}
-
-		<div>
-
-			<h2>{{ loop.index }}
-				/
-				{{ program.title }}
-				- Catégorie :
-				{{ program.category.name }}</h2>
-
-			<p>{{ program.synopsis }}</p>
-
-			<a href="{{ path("program_show", { id: program.id }) }}">Voir la fiche</a>
-
-		</div>
-
-	{% else %}
-
-		Aucune série trouvée.
-
-	{% endfor %}
-
-
-	<a href="{{ path('home_index') }}">
-
-		Retour à l'accueil
-
-	</a>
-
-
-{% endblock %}
+	<div class="row m-2">
+		{% for program in programs %}
+			<div class="col-sm-6 col-md-4" style="margin-bottom: 15px;">
+				<div class="card mt-2 ">
+					<img class="w-100" src="{{ asset('build/images/placeholder.jpeg') }}" class="card-img-top" alt="placeholder">
+					<div class="card-body">
+						<h2 class="card-title">{{ program.title }}</h2>
+						<p class="card-text">{{ program.category.name }}</p>
+						<h4 class="card-title">{{ program.synopsis }}</h4>
+						<div class="button d-flex align-items-center">
+							<a href="{{ path("program_show", { slug: program.slug }) }}" class="btn btn-primary mt-2">Voir la fiche</a>
+							<a href="{{ path('home_index') }}" class="btn btn-primary mt-2">Retour à l'accueil</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			Aucune série trouvée.
+		{% endfor %}
+	{% endblock %}

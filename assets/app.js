@@ -19,6 +19,13 @@ console.log('Hello Webpack Encore !')
 
 require('bootstrap');// j appel boostrap
 
+import headerPath from './images/bvn.webp';
+
+let html = `<img src="${headerPath}" alt="image of retro wave">`;
+
+import logoPath from './images/placeholder.jpeg';
+
+let logo = `<img src="${logoPath}" alt="image of retro wave">`;
 // or you can include specific pieces
 // require('bootstrap/js/dist/tooltip');
 // require('bootstrap/js/dist/popover');

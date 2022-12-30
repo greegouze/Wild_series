@@ -1,0 +1,12 @@
+{% extends 'layoutEmail.html.twig' %}
+
+{% block body %}
+	<h1>Nouveau episode
+		{{ episode.title }}
+		crée</h1>
+	<p>Bonjour, un nouveau episode 
+		{{ episode.title }}
+		a était crée sur Netflux</p>
+	<p>Synopsis :
+		{{episode.synopsis }}</p>
+{% endblock %}
