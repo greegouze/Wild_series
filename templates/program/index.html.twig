@@ -11,7 +11,7 @@
 		{% for program in programs %}
 			<div class="col-sm-6 col-md-4" style="margin-bottom: 15px;">
 				<div class="card mt-2 ">
-					<img class="w-100" src="{{ asset('build/images/placeholder.jpeg') }}" class="card-img-top" alt="placeholder">
+					<img src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }}">
 					<div class="card-body">
 						<h2 class="card-title">{{ program.title }}</h2>
 						<p class="card-text">{{ program.category.name }}</p>

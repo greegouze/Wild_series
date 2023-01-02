@@ -6,7 +6,7 @@
 
 {% block body %}
 	<div class="media">
-		<img class="align-self-start mr-3" src="{{ asset('build/images/placeholder.jpeg') }}" alt="{{ program.title }} poster">
+		<img class="align-self-start mr-3" src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }}">
 		<div class="media-body">
 			<h1 class="mt-0">{{ season.number }}</h1>
 			<p>{{ season.description }}</p>
